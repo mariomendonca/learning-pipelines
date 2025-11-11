@@ -1,0 +1,54 @@
+name: CI/CD - Spring Boot
+
+# 🎯 QUANDO o pipeline será executado
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# 🛠️ JOBS: Conjunto de tarefas que serão executadas
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Máquina virtual Ubuntu que vai rodar o pipeline
+
+    steps:
+      # 1️⃣ CHECKOUT: Baixa o código do repositório
+      - name: 🧾 Checkout do código
+        uses: actions/checkout@v4
+
+      # 2️⃣ SETUP JAVA: Configura o ambiente Java
+      - name: ☕ Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'  # Distribuição OpenJDK (Eclipse Temurin)
+          java-version: '21'       # Versão do Java (mesmo do pom.xml)
+
+      # 3️⃣ CACHE MAVEN: Acelera o build armazenando dependências
+      - name: 💾 Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # 4️⃣ BUILD: Compila o projeto (sem rodar testes ainda)
+      - name: 📦 Build com Maven
+        run: mvn clean package -DskipTests
+
+      # 5️⃣ TESTES: Executa os testes unitários
+      - name: 🧪 Rodar testes
+        run: mvn test
+
+      # 6️⃣ ARTEFATO: Prepara o JAR para upload
+      - name: 📤 Gerar artefato (JAR)
+        run: mkdir -p artifacts && cp target/*.jar artifacts/
+
+      # 7️⃣ UPLOAD: Salva o JAR como artefato do GitHub Actions
+      - name: 🔼 Upload do artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-springboot
+          path: artifacts/*.jar
+
