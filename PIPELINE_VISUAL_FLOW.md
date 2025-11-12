@@ -337,7 +337,7 @@ Resultado:
 Execute os comandos abaixo para ativar seu pipeline:
 
 ```bash
-git add .github/workflows/ci.yml
+git add .github/workflows/ci.txt
 git commit -m "ci: adiciona pipeline básico de CI/CD"
 git push origin main
 ```

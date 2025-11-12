@@ -1,0 +1,34 @@
+name: 🚀 Deploy no Docker Hub
+
+on:
+  workflow_run:
+    workflows: [ "🧪 Testes e SonarCloud" ]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Baixar artefato do build
+        uses: actions/download-artifact@v4
+        with:
+          name: learning-pipes-app
+
+      - name: Build e push da imagem
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/learning-pipes-app:latest

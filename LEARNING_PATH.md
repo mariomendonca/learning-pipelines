@@ -49,7 +49,7 @@ Uma folha de cola com:
 ---
 
 ### 4️⃣ **O Pipeline em Ação** → Código real
-⚙️ **[.github/workflows/ci.yml](./.github/workflows/ci.yml)**
+⚙️ **[.github/workflows/ci.yml](ci.txt)**
 
 O arquivo real do pipeline que:
 - ✅ Faz checkout do código
@@ -67,7 +67,7 @@ O arquivo real do pipeline que:
 
 ### Passo 1: Commit o pipeline
 ```bash
-git add .github/workflows/ci.yml
+git add .github/workflows/ci.txt
 git commit -m "ci: adiciona pipeline básico de CI/CD"
 git push origin main
 ```

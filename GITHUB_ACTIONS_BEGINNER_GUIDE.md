@@ -252,7 +252,7 @@ jobs:
 
 ```bash
 cd /Users/mariomendonca/Desktop/dev/fiap/fase4/learning-pipelines
-git add .github/workflows/ci.yml
+git add .github/workflows/ci.txt
 git commit -m "ci: adiciona pipeline básico de CI/CD"
 git push origin main
 ```
