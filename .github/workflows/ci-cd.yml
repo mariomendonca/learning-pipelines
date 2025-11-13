@@ -1,0 +1,30 @@
+name: 🚀 CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # Job 1: Build and Test
+  test:
+    name: 🧪 Tests
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+
+  # Job 2: SonarCloud Analysis (runs after tests)
+  sonar:
+    name: 📊 SonarCloud Analysis
+    needs: test
+    uses: ./.github/workflows/sonar.yml
+    secrets: inherit
+
+  # Job 3: Docker Build & Deploy (only on main branch, after sonar)
+  docker:
+    name: 🐳 Docker Build & Push
+    needs: sonar
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    uses: ./.github/workflows/docker.yml
+    secrets: inherit
+
