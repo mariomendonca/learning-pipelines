@@ -1,0 +1,23 @@
+name: simple-ci.yaml
+on:
+  push:
+    branches: [ develop ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: run tests
+        run: mvn clean test
+
+      - name: build package
+        run: mvn package -DskipTests && echo "Build completed successfully"
