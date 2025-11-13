@@ -272,5 +272,11 @@ class UserServiceTest {
         verify(userRepository, times(1)).existsById(999L);
         verify(userRepository, never()).deleteById(anyLong());
     }
+
+    @Test
+    @DisplayName("Should return true")
+    void shouldReturnTrue() {
+        assertTrue(true);
+    }
 }
 
